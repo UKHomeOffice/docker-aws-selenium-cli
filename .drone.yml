@@ -1,7 +1,7 @@
 
 ---
 kind: pipeline
-name: commit
+name: default
 type: kubernetes
 
 platform:
@@ -13,32 +13,62 @@ steps:
   pull: if-not-exists
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
-  - docker build -t quay.io/ukhomeofficedigital/docker-aws-cli-with-selinium-:$${DRONE_COMMIT_SHA} .
+  # wait for docker service to be up before running docker build
+  - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+  - docker build -t quay.io/ukhomeofficedigital/dsa-awscli-selinium:$${DRONE_COMMIT_SHA} .
   environment:
-    # DOCKER_HOST: tcp://172.17.0.1:2375
+#    DOCKER_HOST: tcp://172.17.0.1:2375
+    DOCKER_PASSWORD:
+      from_secret: docker_password
   when:
     event:
     - pull_request
     - push
 
-- name: docker-push
+- name: docker-dev-push
   pull: if-not-exists
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
-  - docker login -u="ukhomeofficedigital+dsa_shared_service" -p=$${DOCKER_TOKEN} quay.io
-  - docker tag quay.io/ukhomeofficedigital/docker-aws-cli-with-selinium-:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/docker-aws-cli-with-selinium-:latest
-  - docker push quay.io/ukhomeofficedigital/docker-aws-cli-with-selinium-:$${DRONE_COMMIT_SHA}
-  - docker push quay.io/ukhomeofficedigital/docker-aws-cli-with-selinium-:latest
+#   wait for docker service to be up before running docker build
+  - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io
+  - docker tag quay.io/ukhomeofficedigital/dsa-jira:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dsa-awscli-selinium:dev-latest
+  - docker push quay.io/ukhomeofficedigital/dsa-awscli-selinium:$${DRONE_COMMIT_SHA}
+  - docker push quay.io/ukhomeofficedigital/dsa-awscli-selinium:dev-latest
   environment:
-    # DOCKER_HOST: tcp://172.17.0.1:2375
-    DOCKER_TOKEN:
-      from_secret: DOCKER_TOKEN
+#    DOCKER_HOST: tcp://172.17.0.1:2375
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
   when:
     branch:
-    - main
+    - development
+    event:
+    - push
+
+- name: docker-prod-push
+  pull: if-not-exists
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  commands:
+#   wait for docker service to be up before running docker build
+  - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io
+  - docker tag quay.io/ukhomeofficedigital/dsa-jira:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dsa-awscli-selinium:latest
+  - docker push quay.io/ukhomeofficedigital/dsa-awscli-selinium:$${DRONE_COMMIT_SHA}
+  - docker push quay.io/ukhomeofficedigital/dsa-awscli-selinium:latest
+  environment:
+#    DOCKER_HOST: tcp://172.17.0.1:2375
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    branch:
+    - master
     event:
     - push
 
 services:
-- name: docker
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  - name: docker
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
