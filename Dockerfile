@@ -22,5 +22,10 @@ RUN pip install --upgrade pip
 RUN pip install selenium==3.141.0
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
 
+COPY Move-From-S3.sh /import/
+COPY Move-To-S3.sh /import/ 
+
+RUN chmod 777 /import/Move-From-S3.sh
+RUN chmod 777 /import/Move-To-S3.sh
 
 CMD ["python", "./main.py"]
