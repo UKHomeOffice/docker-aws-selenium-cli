@@ -24,10 +24,10 @@ WORKDIR /app
 RUN pip install --upgrade pip
 RUN pip install selenium==3.141.0
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
-
+USER root
 COPY Move-From-S3.sh /import/
 COPY Move-To-S3.sh /import/ 
-RUN ls -la
+RUN whoami
 RUN ls -la /import
 RUN chown 1000 /import/Move-From-S3.sh
 RUN chown 1000 /import/Move-To-S3.sh
