@@ -27,10 +27,13 @@ FROM quay.io/ukhomeofficedigital/docker-aws-cli
 
 COPY --chown=1000 Move-From-S3.sh /import/
 COPY --chown=1000 Move-To-S3.sh /import/ 
-RUN whoami
+
 RUN ls -la /import
 
+RUN apk
 
+RUN wget https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl \
+  -O /usr/bin/kubectl && chmod 777 /usr/bin/kubectl
 
 RUN chmod +x /import/Move-From-S3.sh
 RUN chmod +x /import/Move-To-S3.sh
