@@ -10,6 +10,7 @@ RUN apk update
 RUN apk add chromium
 RUN apk add chromium-chromedriver
 RUN apk add python3
+RUN apk add py3-pip
 RUN pip3 install -U selenium
 
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
