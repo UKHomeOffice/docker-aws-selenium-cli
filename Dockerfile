@@ -2,7 +2,7 @@ FROM python:3.8
 
 ENV USERMAP_UID 1000
 
-RUN adduser --home --disabled-password 1000
+RUN adduser --no-create-home --disabled-password 1000
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 # Adding Google Chrome to the repositories
