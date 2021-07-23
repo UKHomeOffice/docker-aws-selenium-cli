@@ -24,5 +24,5 @@ COPY --chown=1000 Move-To-S3.sh /import/
 RUN chmod +x /import/Move-From-S3.sh
 RUN chmod +x /import/Move-To-S3.sh
 
-USER ${USERMAP_UID}
+USER 1000
 
