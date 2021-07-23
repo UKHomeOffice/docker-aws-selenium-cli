@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/python-alpine:3.7.6-alpine3.11
+FROM alpine:3.6
 
 ENV USERMAP_UID 1000
 
@@ -22,8 +22,8 @@ RUN ls -la /import
 RUN wget https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl \
   -O /usr/bin/kubectl && chmod 777 /usr/bin/kubectl
 
-RUN apk add --no-cache bash openssl gettext
 RUN apk upgrade --no-cache
+RUN apk add --no-cache bash openssl gettext
 
 
 RUN chmod +x /import/Move-From-S3.sh
@@ -31,4 +31,3 @@ RUN chmod +x /import/Move-To-S3.sh
 
 USER ${USERMAP_UID}
 
-CMD ["python", "./main.py"]
