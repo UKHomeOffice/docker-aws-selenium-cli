@@ -18,13 +18,7 @@ FROM quay.io/ukhomeofficedigital/docker-aws-cli
 COPY --chown=1000 Move-From-S3.sh /import/
 COPY --chown=1000 Move-To-S3.sh /import/ 
 
-RUN ls -la /import
 
-RUN wget "https://dl.k8s.io/release/v1.21.3/bin/linux/amd64/kubectl" \
-  -O /usr/bin/kubectl && chmod 777 /usr/bin/kubectl
-
-RUN apk upgrade --no-cache
-RUN apk add --no-cache bash openssl gettext
 
 
 RUN chmod +x /import/Move-From-S3.sh
