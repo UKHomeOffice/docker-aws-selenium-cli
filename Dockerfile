@@ -1,5 +1,8 @@
 FROM python:3.8
 
+ENV USERMAP_UID 1000
+
+RUN adduser -D -H 1000
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 # Adding Google Chrome to the repositories
@@ -24,8 +27,14 @@ FROM quay.io/ukhomeofficedigital/docker-aws-cli
 
 COPY Move-From-S3.sh /import/
 COPY Move-To-S3.sh /import/ 
-USER root
+
+RUN chown 1000 /import/Move-From-S3.sh
+RUN chown 1000 /import/Move-To-S3.sh
+
+
 RUN chmod +x /import/Move-From-S3.sh
 RUN chmod +x /import/Move-To-S3.sh
+
+USER ${USERMAP_UID}
 
 CMD ["python", "./main.py"]
