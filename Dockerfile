@@ -1,7 +1,7 @@
 FROM python:3.8
 
 ENV USERMAP_UID 1000
-RUN awk -F: '/\/home/ {printf "%s:%s\n",$1,$3}' /etc/passwd
+RUN cat /etc/passwd
 RUN adduser --no-create-home --disabled-password --uid 1000
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
