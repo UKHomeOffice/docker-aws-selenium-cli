@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.14
 
 ENV USERMAP_UID 1000
 
