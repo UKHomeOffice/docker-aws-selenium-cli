@@ -20,7 +20,7 @@ COPY --chown=1000 Move-To-S3.sh /import/
 
 RUN ls -la /import
 
-RUN wget https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl \
+RUN wget "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
   -O /usr/bin/kubectl && chmod 777 /usr/bin/kubectl
 
 RUN apk upgrade --no-cache
