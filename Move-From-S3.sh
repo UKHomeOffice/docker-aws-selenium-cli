@@ -7,7 +7,7 @@ Logs () {
 
     Var1=$1
     Var2=$2
-    pwd=$(pwd)
+    pwd='/import'
 
     if [[ -d $pwd/logs ]]; then
         if [[ -f logs-$Date.txt ]]; then
