@@ -30,7 +30,7 @@ Logs () {
 }
 Logs "INFO" "Starting backup movment. Backup being moved $(date -u +%Y-%B-%d--0100.zip)"
 
-AWS_ACCESS_KEY_ID=$access_key_id AWS_SECRET_ACCESS_KEY=$secret_access_key aws s3 cp /import/export/$(date -u +%Y-%B-%d--0100.zip)  s3://$bucket_name --sse aws:kms --sse-kms-key-id $kms_key_id || Logs "ERROR" "Command failed to run $?"
+AWS_ACCESS_KEY_ID=$access_key_id AWS_SECRET_ACCESS_KEY=$secret_access_key aws s3 cp /import/export/$(date -u +%Y-%b-%d--0100.zip)  s3://$bucket_name --sse aws:kms --sse-kms-key-id $kms_key_id || Logs "ERROR" "Command failed to run $?"
 
 Logs "INFO" "Script has finished"
 
