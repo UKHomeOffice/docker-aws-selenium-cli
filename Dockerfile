@@ -15,11 +15,10 @@ RUN pip3 install -U selenium
 
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
 
-RUN mkdir /scripts
-RUN chown 1000 /scripts
-COPY --chown=1000 main.py /scripts/
-RUN chmod +x /scripts/main.py
 
+COPY --chown=1000 main.py .
+RUN pwd
+RUN chmod +x main.py
 
 USER 1000
 
