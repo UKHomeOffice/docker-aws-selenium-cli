@@ -9,8 +9,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 RUN apk update
 RUN apk add chromium
 RUN apk add chromium-chromedriver
-RUN apk add python3
-RUN apk add py3-pip
 RUN pip3 install -U selenium
 
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
@@ -20,5 +18,6 @@ COPY --chown=1000 main.py /import/
 RUN ls -la /import
 RUN chmod +x /import/main.py
 
+FROM python:3.10.0b4-buster
 USER 1000
 
