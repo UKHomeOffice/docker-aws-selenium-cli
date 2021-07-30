@@ -16,7 +16,7 @@ FROM quay.io/ukhomeofficedigital/docker-aws-cli
 
 COPY --chown=1000 main.py /import/
 RUN ls -la /import
-RUN chmod +x /import/main.py
+RUN chmod 777 /import/main.py
 
 FROM python:3.10.0b4-buster
 RUN pip3 install -U selenium
