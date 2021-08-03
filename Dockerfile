@@ -11,8 +11,6 @@ RUN apk add chromium
 RUN apk add chromium-chromedriver
 
 
-FROM quay.io/ukhomeofficedigital/docker-aws-cli
-
 RUN pwd
 COPY --chown=1000 main.py /import/
 RUN ls -la /import
@@ -23,6 +21,7 @@ RUN chmod 777 /import/main.py
 RUN chmod 777 /python-scripts/main.py
 RUN ls -la /python-scripts
 
+FROM quay.io/ukhomeofficedigital/docker-aws-cli
 FROM python:3.10.0b4-buster
 RUN pip3 install -U selenium
 USER 1000
