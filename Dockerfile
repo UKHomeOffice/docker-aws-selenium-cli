@@ -1,7 +1,8 @@
 FROM alpine:3.14
-
+FROM quay.io/ukhomeofficedigital/docker-aws-cli
+FROM python:3.10.0b4-buster
 ENV USERMAP_UID 1000
-
+USER root
 RUN adduser -D -H 1000
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" > /etc/apk/repositories
@@ -20,7 +21,7 @@ COPY --chown=1000 main.py /python-scripts
 
 RUN ls -la /python-scripts
 RUN ls -la
-FROM quay.io/ukhomeofficedigital/docker-aws-cli
+
 RUN ls -la
 RUN ls -la /python-scripts
 RUN ls -la /import
