@@ -1,5 +1,8 @@
 FROM alpine:3.14
-FROM python:3.10.0b4-buster
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
 
 ENV USERMAP_UID 1000
 USER root
