@@ -9,7 +9,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 RUN apk update
 RUN apk add chromium
 RUN apk add chromium-chromedriver
-
+WORKDIR /
 
 RUN pwd
 COPY --chown=1000 main.py /import/
