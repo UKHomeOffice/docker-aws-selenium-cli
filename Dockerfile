@@ -12,7 +12,7 @@ RUN apk add chromium-chromedriver
 WORKDIR /
 
 RUN pwd
-COPY --chown=1000 main.py /import/
+COPY --chown=1000 main.py /import
 RUN ls -la /import
 RUN ls -la
 RUN mkdir -m777 /python-scripts
@@ -20,8 +20,14 @@ COPY --chown=1000 main.py /python-scripts
 RUN chmod 777 /import/main.py
 RUN chmod 777 /python-scripts/main.py
 RUN ls -la /python-scripts
-
+RUN ls -la
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
+RUN ls -la
+RUN ls -la /python-scripts
+RUN ls -la /import
 FROM python:3.10.0b4-buster
+RUN ls -la
+RUN ls -la /import
+RUN ls -la /python-scripts
 RUN pip3 install -U selenium
 USER 1000
