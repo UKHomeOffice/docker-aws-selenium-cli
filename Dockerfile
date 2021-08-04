@@ -17,8 +17,7 @@ RUN ls -la /import
 RUN ls -la
 RUN mkdir -m777 /python-scripts
 COPY --chown=1000 main.py /python-scripts
-RUN chmod 777 /import/main.py
-RUN chmod 777 /python-scripts/main.py
+
 RUN ls -la /python-scripts
 RUN ls -la
 FROM quay.io/ukhomeofficedigital/docker-aws-cli
