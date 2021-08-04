@@ -3,7 +3,7 @@ FROM quay.io/ukhomeofficedigital/docker-aws-cli
 FROM python:3.10.0b4-buster
 ENV USERMAP_UID 1000
 USER root
-RUN adduser -D -H 1000
+
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" > /etc/apk/repositories
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
