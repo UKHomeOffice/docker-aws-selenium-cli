@@ -1,4 +1,10 @@
-FROM python:3.10.0b4-buster
+FROM alpine:3.6
+
+
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
 
 ENV AWS_CLI_VERSION 1.16.207
 
