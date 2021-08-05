@@ -51,7 +51,7 @@ def jira_restore():
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         restorebutton = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-submit']".click()
-        sleep(60)
+        time.sleep(60)
     except:
         logger.exception('Failed to restore jira')
         raise
