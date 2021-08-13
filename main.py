@@ -24,6 +24,7 @@ jira_password = os.getenv('jira-password')
 logger = logging.Logger('catch_all')
 
 now = datetime.now()
+now_in_utc = datetime.utcnow()
 filename = f"{now.strftime('%Y-%b-%d')}--0100.zip"
 
 
@@ -36,33 +37,39 @@ def jira_restore():
         element = driver.find_element_by_xpath("//*[@id='login-form-username']").send_keys(jira_username)
         element = driver.find_element_by_xpath("//*[@id='login-form-password']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
+        logger.info(f"{now_in_utc} Logging in to jira as api user")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='login-form-authenticatePassword']")))
+        logger.info(f"{now_in_utc} Successfully logged into jira as api user")
     except:
-        logger.exception('Failed to log in')
+        logger.exception(f"{now_in_utc} Failed to log in")
         raise 
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
+        logger.info(f"{now_in_utc} Authenticating to jira as an admin")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='restore-xml-data-backup-file-name']")))
+        logger.info(f"{now_in_utc} Successfully authenticated as a jira admin")
 
     except:
-        logger.exception('Failed to log in as admin')
+        logger.exception(f"{now_in_utc} Failed to log in as admin")
         raise
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         restorebutton = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-submit']").click()
+        logger.info(f"{now_in_utc} Attempting jira restore...")
         x = True
         while x:
             try:
                 driver.find_element_by_xpath("//*[@id='main']/div[1]/p")
                 x = False
+                logger.info(f"{now_in_utc} Successfully restored jira")
             except:
-                logger.exception('Restoration is still ongoing')
+                logger.exception(f"{now_in_utc} Restoration is still ongoing")
                 time.sleep(300)
        
 
     except:
-        logger.exception('Failed to restore jira')
+        logger.exception(f"{now_in_utc} Failed to restore jira")
         raise
     time.sleep(60)
     driver.close
