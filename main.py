@@ -19,9 +19,10 @@ chrome_prefs = {}
 chrome_options.experimental_options["prefs"] = chrome_prefs
 chrome_prefs["profile.default_content_settings"] = {"images": 2}
 
-jira_username = os.getenv('jira-username')
-jira_password = os.getenv('jira-password')
-logger = logging.Logger('catch_all')
+jira_username = os.getenv('jirausername')
+jira_password = os.getenv('jirapassword')
+logging.basicConfig(level = logging.INFO)
+
 
 now = datetime.now()
 now_in_utc = datetime.utcnow()
@@ -33,49 +34,46 @@ def jira_restore():
     driver = webdriver.Chrome(options=chrome_options)
     try:
         
-        driver.get(f"https://jira.shs-dev.dsa-notprod.homeoffice.gov.uk/secure/admin/XmlRestore!default.jspa")
+        driver.get("https://jira.shs-dev.dsa-notprod.homeoffice.gov.uk/secure/admin/XmlRestore!default.jspa")
         element = driver.find_element_by_xpath("//*[@id='login-form-username']").send_keys(jira_username)
         element = driver.find_element_by_xpath("//*[@id='login-form-password']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
-        logger.info(f"{now_in_utc} Logging in to jira as api user")
+        logging.info(f"{now_in_utc} Logging in to jira as api user")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='login-form-authenticatePassword']")))
-        logger.info(f"{now_in_utc} Successfully logged into jira as api user")
+        logging.info(f"{now_in_utc} Successfully logged into jira as api user")
     except:
-        logger.exception(f"{now_in_utc} Failed to log in")
+        logging.exception(f"{now_in_utc} Failed to log in")
         raise 
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
-        logger.info(f"{now_in_utc} Authenticating to jira as an admin")
+        logging.info(f"{now_in_utc} Authenticating to jira as an admin")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='restore-xml-data-backup-file-name']")))
-        logger.info(f"{now_in_utc} Successfully authenticated as a jira admin")
+        logging.info(f"{now_in_utc} Successfully authenticated as a jira admin")
 
     except:
-        logger.exception(f"{now_in_utc} Failed to log in as admin")
+        logging.exception(f"{now_in_utc} Failed to log in as admin")
         raise
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         restorebutton = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-submit']").click()
-        logger.info(f"{now_in_utc} Attempting jira restore...")
+        logging.info(f"{now_in_utc} Attempting jira restore...")
         x = True
         while x:
             try:
                 driver.find_element_by_xpath("//*[@id='main']/div[1]/p")
                 x = False
-                logger.info(f"{now_in_utc} Successfully restored jira")
+                logging.info(f"{now_in_utc} Successfully restored jira")
             except:
-                logger.exception(f"{now_in_utc} Restoration is still ongoing")
+                logging.exception(f"{now_in_utc} Restoration is still ongoing")
                 time.sleep(300)
        
 
     except:
-        logger.exception(f"{now_in_utc} Failed to restore jira")
+        logging.exception(f"{now_in_utc} Failed to restore jira")
         raise
     time.sleep(60)
     driver.close
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.WARNING, format='%(asctime)s:%(levelname)7s:%(message)s')
-    logging.info("start")
     jira_restore()
-    logging.info("end")
