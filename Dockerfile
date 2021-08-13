@@ -16,6 +16,7 @@ RUN apk add chromium-chromedriver
 WORKDIR /
 RUN mkdir -m777 /python-scripts
 COPY --chown=1000 main.py /python-scripts
+RUN chmod +x /python-scripts/main.py
 
 
 RUN pip3 install -U selenium
