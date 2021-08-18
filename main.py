@@ -76,8 +76,7 @@ def jira_restore():
             driver.close
         except:
             logging.exception(f"{now_in_utc} Restoration is still ongoing")
-            continue
-            time.sleep(300)
+            time.sleep(600)
        
 
 if __name__ == "__main__":
