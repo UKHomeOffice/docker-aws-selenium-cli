@@ -28,7 +28,6 @@ now = datetime.now()
 now_in_utc = datetime.utcnow()
 filename = f"{now.strftime('%Y-%b-%d')}--0100.zip"
 
-
 def jira_restore():
     
     driver = webdriver.Chrome(options=chrome_options)
@@ -43,7 +42,7 @@ def jira_restore():
         logging.info(f"{now_in_utc} Successfully logged into jira as api user")
     except:
         logging.exception(f"{now_in_utc} Failed to log in")
-        raise 
+        driver.close 
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
@@ -53,27 +52,35 @@ def jira_restore():
 
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
-        raise
+        driver.close
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         restorebutton = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-submit']").click()
-        logging.info(f"{now_in_utc} Attempting jira restore...")
-        x = True
-        while x:
-            try:
-                driver.find_element_by_xpath("//*[@id='main']/div[1]/p")
-                x = False
-                logging.info(f"{now_in_utc} Successfully restored jira")
-            except:
-                logging.exception(f"{now_in_utc} Restoration is still ongoing")
-                time.sleep(300)
-       
-
+        time.sleep(30)
     except:
-        logging.exception(f"{now_in_utc} Failed to restore jira")
-        raise
-    time.sleep(60)
-    driver.close
+        logging.exception(f"{now_in_utc} failed to enter filename")
+        driver.close
+
+    if "importprogress?" in driver.current_url:
+        logging.info(f"{now_in_utc} Beginning restoration")
+    else:
+        logging.exception(f"{now_in_utc} failed to start restoration - ")
+        driver.close
+    logging.info(f"{now_in_utc} Attempting jira restore...")
+    x = True
+    while x:
+        try:
+            driver.find_element_by_xpath("//*[@id='main']/div[1]/p")
+            x = False
+            logging.info(f"{now_in_utc} Successfully restored jira")
+            driver.close
+        except:
+            logging.exception(f"{now_in_utc} Restoration is still ongoing")
+            continue
+            time.sleep(300)
+       
 
 if __name__ == "__main__":
     jira_restore()
+    # //*[@id="main"]/div[1]/p
+    # //*[@id="main"]/div[1]
