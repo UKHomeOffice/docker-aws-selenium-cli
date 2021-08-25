@@ -75,7 +75,7 @@ def jira_restore():
             logging.info(f"{now_in_utc} Successfully restored jira")
             driver.close
         except:
-            logging.exception(f"{now_in_utc} Restoration is still ongoing")
+            logging.info(f"{now_in_utc} Restoration is still ongoing")
             time.sleep(600)
        
 
