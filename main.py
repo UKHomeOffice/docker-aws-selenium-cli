@@ -75,6 +75,16 @@ def jira_restore():
             logging.info(f"{now_in_utc} Successfully restored jira")
             driver.close
         except:
+            driver.find_element_by_xpath("/html/body/div/div/div/div/main/div[2]/p[2]/a")
+            x = False
+            logging.info(f"{now_in_utc} Successfully restored jira")
+            driver.close
+        except:
+            driver.find_element_by_xpath("/html/body/div[1]/div/div/div/main/form/div[2]/div/input")
+            x = False
+            logging.info(f"{now_in_utc} Successfully restored jira")
+            driver.close
+        except:
             logging.info(f"{now_in_utc} Restoration is still ongoing")
             time.sleep(600)
        
