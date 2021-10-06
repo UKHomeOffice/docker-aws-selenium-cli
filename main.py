@@ -92,7 +92,7 @@ def jira_restore():
                 driver.close
             else:
                 logging.info(f"{now_in_utc} Restoration is still ongoing")
-                time.sleep(600)
+                time.sleep(60)
 
        
 
