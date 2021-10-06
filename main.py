@@ -86,13 +86,8 @@ def jira_restore():
             logging.info(f"{now_in_utc} Successfully restored jira")
             driver.close
         except:
-            if "importprogress?" in driver.current_url:
-                x = False
-                logging.info(f"{now_in_utc} Successfully restored jira")
-                driver.close
-            else:
-                logging.info(f"{now_in_utc} Restoration is still ongoing")
-                time.sleep(60)
+            logging.info(f"{now_in_utc} Restoration is still ongoing")
+            time.sleep(60)
 
 
        
