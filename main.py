@@ -94,6 +94,7 @@ def jira_restore():
                 logging.info(f"{now_in_utc} Restoration is still ongoing")
                 time.sleep(60)
 
+
        
 
 if __name__ == "__main__":
