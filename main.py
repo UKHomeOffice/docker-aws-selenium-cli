@@ -26,7 +26,7 @@ logging.basicConfig(level = logging.INFO)
 
 now = datetime.now()
 now_in_utc = datetime.utcnow()
-filename = f"{now.strftime('%Y-%b-%d')}--0100.zip"
+filename = "2021-Oct-06--0100.zip"
 
 def jira_restore():
     
@@ -49,8 +49,8 @@ def jira_restore():
         logging.info(f"{now_in_utc} Authenticating to jira as an admin")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='restore-xml-data-backup-file-name']")))
         logging.info(f"{now_in_utc} Successfully authenticated as a jira admin")
-        logging.info(driver.page_source)
-        logging.info(driver.source)
+        html=driver.page_source
+        logging.info(f"html is {html}")
 
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
