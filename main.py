@@ -26,7 +26,7 @@ logging.basicConfig(level = logging.INFO)
 
 now = datetime.now()
 now_in_utc = datetime.utcnow()
-filename = "2021-Oct-06--0100.zip"
+filename = f"{now.strftime('%Y-%b-%d')}--0100.zip"
 
 def jira_restore():
     
@@ -49,15 +49,14 @@ def jira_restore():
         logging.info(f"{now_in_utc} Authenticating to jira as an admin")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='restore-xml-data-backup-file-name']")))
         logging.info(f"{now_in_utc} Successfully authenticated as a jira admin")
-        html=driver.page_source
-        logging.info(f"html is {html}")
-
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
         driver.close
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
+        logging.info(f"{now_in_utc} found and sent filename section")
         restorebutton = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-submit']").click()
+        logging.info(f"{now_in_utc} found and clicked restore button")
         time.sleep(30)
     except:
         logging.exception(f"{now_in_utc} failed to enter filename")
@@ -87,8 +86,14 @@ def jira_restore():
             logging.info(f"{now_in_utc} Successfully restored jira")
             driver.close
         except:
-            logging.info(f"{now_in_utc} Restoration is still ongoing")
-            time.sleep(600)
+            if "importprogress?" in driver.current_url:
+                x = False
+                logging.info(f"{now_in_utc} Successfully restored jira")
+                driver.close
+            else:
+                logging.info(f"{now_in_utc} Restoration is still ongoing")
+                time.sleep(600)
+
        
 
 if __name__ == "__main__":
