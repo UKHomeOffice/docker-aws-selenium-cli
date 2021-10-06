@@ -32,7 +32,7 @@ def jira_restore():
     
     driver = webdriver.Chrome(options=chrome_options)
     try:
-        
+        logging.info(f"{now_in_utc} Starting the function")
         driver.get("https://jira.shs-dev.dsa-notprod.homeoffice.gov.uk/secure/admin/XmlRestore!default.jspa")
         element = driver.find_element_by_xpath("//*[@id='login-form-username']").send_keys(jira_username)
         element = driver.find_element_by_xpath("//*[@id='login-form-password']").send_keys(jira_password)
