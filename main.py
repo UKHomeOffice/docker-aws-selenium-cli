@@ -49,6 +49,8 @@ def jira_restore():
         logging.info(f"{now_in_utc} Authenticating to jira as an admin")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='restore-xml-data-backup-file-name']")))
         logging.info(f"{now_in_utc} Successfully authenticated as a jira admin")
+        logging.info(driver.page_source)
+        logging.info(driver.source)
 
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
