@@ -40,6 +40,7 @@ def jira_restore():
         logging.info(f"{now_in_utc} Logging in to jira as api user")
         WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='login-form-authenticatePassword']")))
         logging.info(f"{now_in_utc} Successfully logged into jira as api user")
+        logging.info(f"{filename}")
     except:
         logging.exception(f"{now_in_utc} Failed to log in")
         driver.close 
@@ -62,12 +63,14 @@ def jira_restore():
         logging.exception(f"{now_in_utc} failed to enter filename")
         driver.close
 
-    if "importprogress?" in driver.current_url:
-        logging.info(f"{now_in_utc} Beginning restoration")
-    else:
-        logging.exception(f"{now_in_utc} failed to start restoration - ")
-        driver.close
-    logging.info(f"{now_in_utc} Attempting jira restore...")
+    # if "importprogress?" in driver.current_url:
+    #     logging.info(f"{now_in_utc} Beginning restoration")
+    # else:
+    #     logging.exception(f"{now_in_utc} failed to start restoration - ")
+    #     driver.close
+    # logging.info(f"{now_in_utc} Attempting jira restore...")
+    logging.info(driver.current_url)
+    logging.info(driver.page_source)
     x = True
     while x:
         try:
