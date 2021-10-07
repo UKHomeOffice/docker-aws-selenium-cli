@@ -45,7 +45,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} Failed to log in")
         driver.close 
-        sys.exit(1)
+        quit(1)
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
@@ -55,7 +55,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
         driver.close
-        sys.exit(1)
+        quit(1)
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         logging.info(f"{now_in_utc} found and sent filename section")
@@ -65,7 +65,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} failed to enter filename")
         driver.close
-        sys.exit(1)
+        quit(1)
 
 
     if "importprogress?" in driver.current_url:
@@ -75,11 +75,11 @@ def jira_restore():
         if error_element:
             logging.exception(f"{now_in_utc} failed to start restoration - {error_element}")
             driver.close
-            sys.exit(1)
+            quit(1)
         else:
             logging.exception(f"{now_in_utc} failed to start restoration - {error_element}")
             driver.close
-            sys.exit(1)
+            quit(1)
 
 
     logging.info(f"{now_in_utc} Attempting jira restore...")
