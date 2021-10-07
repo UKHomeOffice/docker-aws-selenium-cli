@@ -4,6 +4,7 @@ import datetime
 from datetime import datetime
 import logging 
 import os
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
@@ -44,7 +45,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} Failed to log in")
         driver.close 
-        os._exit(2)
+        sys.exit(1)
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
@@ -54,7 +55,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} Failed to log in as admin")
         driver.close
-        os._exit(2)
+        sys.exit(1)
     try:
         file = driver.find_element_by_xpath("//*[@id='restore-xml-data-backup-file-name']").send_keys(filename)
         logging.info(f"{now_in_utc} found and sent filename section")
@@ -64,7 +65,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} failed to enter filename")
         driver.close
-        os._exit(2)
+        sys.exit(1)
 
     if "importprogress?" in driver.current_url:
         logging.info(f"{now_in_utc} Beginning restoration")
@@ -73,11 +74,11 @@ def jira_restore():
         if error_element:
             logging.exception(f"{now_in_utc} failed to start restoration - {error_element}")
             driver.close
-            os._exit(2)
+            sys.exit(1)
         else:
             logging.exception(f"{now_in_utc} failed to start restoration - {error_element}")
             driver.close
-            os._exit(2)
+            sys.exit(1)
 
     logging.info(f"{now_in_utc} Attempting jira restore...")
     logging.info(f"{driver.current_url}")
@@ -88,21 +89,21 @@ def jira_restore():
             x = False
             logging.info(f"{now_in_utc} Successfully restored jira")
             driver.close
-            os._exit(2)
+            sys.exit(1)
         except:
             try:
                 driver.find_element_by_xpath("/html/body/div/div/div/div/main/div[2]/p[2]/a")
                 x = False
                 logging.info(f"{now_in_utc} Successfully restored jira")
                 driver.close
-                os._exit(2)
+                sys.exit(1)
             except:
                 try:
                     driver.find_element_by_xpath("/html/body/div[1]/div/div/div/main/form/div[2]/div/input")
                     x = False
                     logging.info(f"{now_in_utc} Successfully restored jira")
                     driver.close
-                    os._exit(2)
+                    sys.exit(1)
                 except:
                     logging.info(f"{now_in_utc} Restoration is still ongoing")
                     time.sleep(60)
