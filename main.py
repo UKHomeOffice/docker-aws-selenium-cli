@@ -45,6 +45,7 @@ def jira_restore():
     except:
         logging.exception(f"{now_in_utc} Failed to log in")
         driver.close 
+        sys.exit(1)
     try:
         element = driver.find_element_by_xpath("//*[@id='login-form-authenticatePassword']").send_keys(jira_password)
         element = driver.find_element_by_xpath("//*[@id='login-form-submit']").click()
