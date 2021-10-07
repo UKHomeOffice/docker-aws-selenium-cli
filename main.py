@@ -69,7 +69,7 @@ def jira_restore():
     if "importprogress?" in driver.current_url:
         logging.info(f"{now_in_utc} Beginning restoration")
     else:
-        error_element = driver.find_element_by_xpath("/html/body/div/div/section/div[2]/div/main/form/div[1]").getText()
+        error_element = driver.find_element_by_xpath("/html/body/div/div/section/div[2]/div/main/form/div[1]/fieldset[1]/div/div[1]").getText()
         if error_element:
             logging.exception(f"{now_in_utc} failed to start restoration - {error_element}")
             driver.close
