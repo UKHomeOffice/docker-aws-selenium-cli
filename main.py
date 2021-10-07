@@ -69,8 +69,8 @@ def jira_restore():
     #     logging.exception(f"{now_in_utc} failed to start restoration - ")
     #     driver.close
     # logging.info(f"{now_in_utc} Attempting jira restore...")
-    logging.info(driver.current_url)
-    logging.info(driver.page_source)
+    logging.info(f"{driver.current_url}")
+    logging.info(f"{driver.page_source}")
     x = True
     while x:
         try:
