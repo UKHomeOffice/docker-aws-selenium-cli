@@ -30,8 +30,9 @@ now_in_utc = datetime.utcnow()
 filename = f"{now.strftime('%Y-%b-%d')}--0100.zip"
 
 def jira_restore():
-    
+    logging.info("Driver getting ready")
     driver = webdriver.Chrome(options=chrome_options)
+    time.sleep(30)
     try:
         logging.info(f"{now_in_utc} Starting the function")
         driver.get("https://jira.shs-dev.dsa-notprod.homeoffice.gov.uk/secure/admin/XmlRestore!default.jspa")
