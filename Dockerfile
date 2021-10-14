@@ -19,6 +19,7 @@ COPY --chown=1000 main.py /python-scripts
 RUN chmod +x /python-scripts/main.py
 RUN apk add build-base
 RUN apk add python3-dev
-
+RUN apk add python-devel
+RUN apk add gcc
 RUN pip3 install -U selenium
 USER 1000
