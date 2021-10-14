@@ -92,22 +92,27 @@ def jira_restore():
             driver.find_element_by_xpath("//*[@id='main']/div[1]/p")
             x = False
             logging.info(f"{now_in_utc} Successfully restored jira")
-            driver.close
         except:
             try:
                 driver.find_element_by_xpath("/html/body/div/div/div/div/main/div[2]/p[2]/a")
                 x = False
                 logging.info(f"{now_in_utc} Successfully restored jira")
-                driver.close
             except:
                 try:
                     driver.find_element_by_xpath("/html/body/div[1]/div/div/div/main/form/div[2]/div/input")
                     x = False
                     logging.info(f"{now_in_utc} Successfully restored jira")
-                    driver.close
                 except:
-                    logging.info(f"{now_in_utc} Restoration is still ongoing")
-                    time.sleep(60)
+                    if "ImportResult.jspa" in driver.current_url:
+                        x = False
+                        logging.info(f"{now_in_utc} Successfully restored jira")
+                    else:
+                        logging.info(f"{now_in_utc} Restoration is still ongoing")
+                        driver.refresh()
+                        time.sleep(60)
+    # driver.get("https://jira.shs-dev.dsa-notprod.homeoffice.gov.uk/servicedesk/admin/PS/email-settings")
+    # element = driver.find_element_by_xpath("/html/body/div[2]/div[2]/section[2]/div[2]/div/main/div[2]/div/div[4]/form/div[2]/div/input").click()
+                    
 
 
        
